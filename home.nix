@@ -24,6 +24,11 @@
     htop
     jq
     brave
+    slack
+    postman
+    mongodb-compass
+    zoom-us
+    obsidian
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -76,6 +81,13 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # XDG configuration
+  xdg = {
+    enable = true;
+    mime.enable = true;
+    systemDirs.data = [ "${config.home.homeDirectory}/.nix-profile/share/applications" ];
+  };
 
   programs.git = {
     enable = true;

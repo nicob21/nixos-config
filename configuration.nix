@@ -54,6 +54,10 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
+  # XDG desktop portal for proper application integration
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "fr";
@@ -96,15 +100,14 @@
     packages = with pkgs; [
       vscode
       brave
-      slack
-      postman
-      mongodb-compass
-      zoom-us
     ];
   };
 
   # Install firefox.
   programs.firefox.enable = true;
+
+  # XDG integration for proper application icons and desktop entries
+  programs.dconf.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
