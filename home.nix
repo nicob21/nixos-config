@@ -24,9 +24,6 @@
     htop
     jq
     brave
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    hello
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -86,6 +83,12 @@
     userEmail = "nico.bernard@rhino.fi";
   };
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -93,6 +96,7 @@
     shellAliases = {
       ".." = "cd ..";
       "ll" = "ls -la";
+      "core" = "cd ~/rhino/rhino-core";
     };
 
     plugins = [
@@ -126,6 +130,7 @@
         # settings
         userSettings = {
           "editor.formatOnSave" = true;
+          "window.zoomLevel" = 2; # 0 is default, positive numbers zoom in, negative zoom out
         };
 
         # keybindings
