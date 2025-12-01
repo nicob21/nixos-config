@@ -86,9 +86,8 @@
 
   programs.zsh = {
     enable = true;
-    # enableBashCompletion = true;
-    # autosuggestions.enable = true;
-    # syntaxHighlisting.enable = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
     shellAliases = {
       ".." = "cd ..";
       "ll" = "ls -la";
@@ -105,9 +104,6 @@
           src = ./p10k-config;
           file = ".p10k.zsh";
         }
-        #"zsh-autosuggestions"
-        #"fzf-zsh-plugin"
-        #"fzf-tab"
     ];
     
     oh-my-zsh = {
