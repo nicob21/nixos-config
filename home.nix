@@ -19,9 +19,11 @@
   # environment.
   home.packages = with pkgs; [
     # zsh-powerlevel10k
+    nixfmt-rfc-style
     fzf
     htop
     jq
+    brave
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     hello
@@ -77,7 +79,7 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  
+
   programs.git = {
     enable = true;
     userName = "nicob21";
@@ -92,7 +94,7 @@
       ".." = "cd ..";
       "ll" = "ls -la";
     };
-    
+
     plugins = [
       {
         name = "powerlevel10k";
@@ -100,18 +102,48 @@
         file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
       }
       {
-          name = "powerlevel10k-config";
-          src = ./p10k-config;
-          file = ".p10k.zsh";
-        }
+        name = "powerlevel10k-config";
+        src = ./p10k-config;
+        file = ".p10k.zsh";
+      }
     ];
-    
+
     oh-my-zsh = {
       enable = true;
       plugins = [
         "git"
       ];
       theme = "powerlevel10k";
+    };
+  };
+
+  # vscode config
+  programs.vscode = {
+    enable = true;
+
+    profiles = {
+      default = {
+        # settings
+        userSettings = {
+          "editor.formatOnSave" = true;
+        };
+
+        # keybindings
+        keybindings = [
+        ];
+
+        # extensions
+        extensions = with pkgs.vscode-marketplace; [
+          jnoortheen.nix-ide
+        ];
+      };
+    };
+  };
+
+  # GNOME dconf settings
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      text-scaling-factor = 1.3; # 130% scaling, adjust as needed (1.0 = 100%, 1.5 = 150%, etc.)
     };
   };
 
