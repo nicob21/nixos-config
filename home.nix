@@ -167,6 +167,19 @@
     "org/gnome/desktop/interface" = {
       text-scaling-factor = 1.3; # 130% scaling, adjust as needed (1.0 = 100%, 1.5 = 150%, etc.)
     };
+    "org/gnome/desktop/background" = {
+      picture-uri = "file://${config.home.homeDirectory}/.wallpaper";
+      picture-uri-dark = "file://${config.home.homeDirectory}/.wallpaper";
+      picture-options = "zoom";
+    };
   };
+
+  # Wallpaper
+  home.file.".wallpaper".source = ./wallpapers/milkyway.jpg;
+
+  # Brave flags for touchpad gestures
+  home.file.".config/brave-flags.conf".text = ''
+    --enable-features=TouchpadOverscrollHistoryNavigation
+  '';
 
 }
