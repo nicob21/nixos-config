@@ -117,6 +117,7 @@
   environment.systemPackages = with pkgs; [
     git
     vim
+    nixos-option
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

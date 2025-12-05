@@ -9,7 +9,14 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-vscode-extensions, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nix-vscode-extensions,
+      ...
+    }:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -20,19 +27,23 @@
           nix-vscode-extensions.overlays.default
         ];
       };
-    in {
-    nixosConfigurations = {
-      yoga-pro = lib.nixosSystem {
-        inherit system;
-        modules = [ ./configuration.nix ];
+    in
+    {
+      nixosConfigurations = {
+        yoga-pro = lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./configuration.nix
+            ./rhino.nix
+          ];
+        };
+      };
+      homeConfigurations = {
+        nico = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home.nix ];
+        };
       };
     };
-    homeConfigurations = {
-      nico = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ ./home.nix ];
-      };
-    };
-  };
 
 }

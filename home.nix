@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./vscode.nix
+  ];
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "nico";
@@ -138,34 +142,10 @@
     };
   };
 
-  # vscode config
-  programs.vscode = {
-    enable = true;
-
-    profiles = {
-      default = {
-        # settings
-        userSettings = {
-          "editor.formatOnSave" = true;
-          "window.zoomLevel" = 2; # 0 is default, positive numbers zoom in, negative zoom out
-        };
-
-        # keybindings
-        keybindings = [
-        ];
-
-        # extensions
-        extensions = with pkgs.vscode-marketplace; [
-          jnoortheen.nix-ide
-        ];
-      };
-    };
-  };
-
   # GNOME dconf settings
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      text-scaling-factor = 1.3; # 130% scaling, adjust as needed (1.0 = 100%, 1.5 = 150%, etc.)
+      text-scaling-factor = 1.1; # adjust as needed (1.0 = 100%, 1.5 = 150%, etc.)
     };
     "org/gnome/desktop/background" = {
       picture-uri = "file://${config.home.homeDirectory}/.wallpaper";
