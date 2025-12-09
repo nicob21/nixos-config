@@ -99,7 +99,7 @@
     userEmail = "nico.bernard@rhino.fi";
     extraConfig = {
       gpg.format = "ssh";
-      user.signingkey = "~/.ssh/id_ed25519.pub";
+      user.signingkey = "~/.ssh/id_25519_sign_commits.pub";
       commit.gpgsign = true;
     };
   };
