@@ -97,6 +97,11 @@
     enable = true;
     userName = "nicob21";
     userEmail = "nico.bernard@rhino.fi";
+    extraConfig = {
+      gpg.format = "ssh";
+      user.signingkey = "~/.ssh/id_ed25519.pub";
+      commit.gpgsign = true;
+    };
   };
 
   programs.direnv = {
