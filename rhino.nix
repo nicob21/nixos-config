@@ -1,5 +1,4 @@
 let
-  secrets = import ./secrets.nix;
   substituters = [
     "s3://rhinofi-nix-cache?endpoint=https://storage.googleapis.com&profile=rhinofi-nix-cache-read&priority=9"
     "https://nix-community.cachix.org"
@@ -21,5 +20,9 @@ in
     "rhinofi:Cn3Tu54aOpn1doAYNYQw3fL4MWLwdZDO+01Ho3RdNeg="
   ];
   nix.settings.netrc-file = "/etc/nix/secrets/.netrc";
-  nix.settings.access-tokens = "github.com=${secrets.githubAccessToken}";
+
+  # Read access token from a file outside the repo
+  nix.extraOptions = ''
+    !include /etc/nix/secrets/access-tokens
+  '';
 }

@@ -33,6 +33,7 @@
     mongodb-compass
     zoom-us
     obsidian
+    wl-clipboard # provides wl-copy and wl-paste (Wayland clipboard)
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -93,6 +94,16 @@
     systemDirs.data = [ "${config.home.homeDirectory}/.nix-profile/share/applications" ];
   };
 
+  # Autostart applications
+  home.file.".config/autostart/slack.desktop".source =
+    "${pkgs.slack}/share/applications/slack.desktop";
+  home.file.".config/autostart/brave-browser.desktop".source =
+    "${pkgs.brave}/share/applications/brave-browser.desktop";
+  home.file.".config/autostart/code.desktop".source =
+    "${pkgs.vscode}/share/applications/code.desktop";
+  home.file.".config/autostart/kitty.desktop".source =
+    "${pkgs.kitty}/share/applications/kitty.desktop";
+
   programs.git = {
     enable = true;
     userName = "nicob21";
@@ -115,6 +126,70 @@
     enableZshIntegration = true;
   };
 
+  programs.kitty = {
+    enable = true;
+    themeFile = "ayu_mirage";
+    settings = {
+      # Font settings
+      font_size = "16.0";
+
+      # Tab bar styling - clean and minimal
+      tab_bar_edge = "bottom";
+      tab_bar_style = "powerline";
+      tab_bar_min_tabs = 1;
+      tab_fade = "0.25 0.5 0.75 1";
+      tab_title_template = " {index}: {title} ";
+      
+      # Active tab colors
+      active_tab_foreground = "#fff";
+      active_tab_background = "#5c6370";
+      active_tab_font_style = "bold";
+      
+      # Inactive tab colors
+      inactive_tab_foreground = "#abb2bf";
+      inactive_tab_background = "#282c34";
+      inactive_tab_font_style = "normal";
+
+      # Other settings
+      confirm_os_window_close = 0;
+      enable_audio_bell = false;
+      scrollback_lines = 10000;
+    };
+    keybindings = {
+      # Copy/Paste
+      "ctrl+c" = "copy_to_clipboard";
+      "ctrl+v" = "paste_from_clipboard";
+
+      # Tabs
+      "ctrl+t" = "new_tab";
+      "ctrl+w" = "close_tab";
+      
+      # Tab navigation
+      "ctrl+page_up" = "previous_tab";
+      "ctrl+page_down" = "next_tab";
+      "ctrl+1" = "goto_tab 1";
+      "ctrl+2" = "goto_tab 2";
+      "ctrl+3" = "goto_tab 3";
+      "ctrl+4" = "goto_tab 4";
+      "ctrl+5" = "goto_tab 5";
+      "ctrl+6" = "goto_tab 6";
+      "ctrl+7" = "goto_tab 7";
+      "ctrl+8" = "goto_tab 8";
+      "ctrl+9" = "goto_tab 9";
+
+      # Navigation - beginning/end of line
+      "ctrl+left" = "send_text all \\x01"; # Ctrl+A (beginning of line)
+      "ctrl+right" = "send_text all \\x05"; # Ctrl+E (end of line)
+
+      # Navigation - word by word
+      "alt+left" = "send_text all \\x1b[1;3D"; # Alt+Left
+      "alt+right" = "send_text all \\x1b[1;3C"; # Alt+Right
+
+      # Delete full line
+      "ctrl+backspace" = "send_text all \\x15"; # Ctrl+U (delete from cursor to beginning of line)
+    };
+  };
+
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -123,6 +198,8 @@
       ".." = "cd ..";
       "ll" = "ls -la";
       "core" = "cd ~/rhino/rhino-core";
+      "pbcopy" = "wl-copy";
+      "pbpaste" = "wl-paste";
     };
 
     plugins = [
@@ -156,6 +233,9 @@
       picture-uri = "file://${config.home.homeDirectory}/.wallpaper";
       picture-uri-dark = "file://${config.home.homeDirectory}/.wallpaper";
       picture-options = "zoom";
+    };
+    "org/gnome/desktop/session" = {
+      idle-delay = 600; # seconds before screen goes blank (300 = 5 minutes, 0 = never)
     };
   };
 
