@@ -157,7 +157,7 @@
     };
     keybindings = {
       # Copy/Paste
-      "ctrl+c" = "copy_to_clipboard";
+      "ctrl+c" = "copy_or_interrupt";
       "ctrl+v" = "paste_from_clipboard";
 
       # Tabs
