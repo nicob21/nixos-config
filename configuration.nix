@@ -100,6 +100,7 @@
     packages = with pkgs; [
       vscode
       brave
+      claude-code
     ];
   };
 
@@ -147,7 +148,7 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 
-  nix.package = pkgs.nixVersions.nix_2_29;
+  nix.package = pkgs.nixVersions.latest;
 
   nix.settings.experimental-features = [
     "nix-command"

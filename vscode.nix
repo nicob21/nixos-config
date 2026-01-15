@@ -256,6 +256,7 @@
           redhat.vscode-yaml
           usernamehw.errorlens
           yoavbls.pretty-ts-errors
+          atlassian.atlascode
         ];
       };
     };

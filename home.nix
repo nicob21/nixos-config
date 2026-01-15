@@ -178,15 +178,15 @@
       "ctrl+9" = "goto_tab 9";
 
       # Navigation - beginning/end of line
-      "ctrl+left" = "send_text all \\x01"; # Ctrl+A (beginning of line)
-      "ctrl+right" = "send_text all \\x05"; # Ctrl+E (end of line)
+      "page_up" = "send_text all \\x01"; 
+      "page_down" = "send_text all \\x05";
 
       # Navigation - word by word
-      "alt+left" = "send_text all \\x1b[1;3D"; # Alt+Left
-      "alt+right" = "send_text all \\x1b[1;3C"; # Alt+Right
+      "ctrl+left" = "send_text all \\x1b[1;3D";
+      "ctrl+right" = "send_text all \\x1b[1;3C";
 
-      # Delete full line
-      "ctrl+backspace" = "send_text all \\x15"; # Ctrl+U (delete from cursor to beginning of line)
+      # Delete word
+      "ctrl+backspace" = "send_text all \\x17";
     };
   };
 
