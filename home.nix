@@ -106,9 +106,11 @@
 
   programs.git = {
     enable = true;
-    userName = "nicob21";
-    userEmail = "nico.bernard@rhino.fi";
-    extraConfig = {
+    settings = {
+      user = {
+        email = "nico.bernard@rhino.fi";
+        name = "nicob21";
+      };
       gpg.format = "ssh";
       user.signingkey = "~/.ssh/id_25519_sign_commits.pub";
       commit.gpgsign = true;
@@ -194,6 +196,7 @@
     enable = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    dotDir = "${config.xdg.configHome}/zsh";
     shellAliases = {
       ".." = "cd ..";
       "ll" = "ls -la";

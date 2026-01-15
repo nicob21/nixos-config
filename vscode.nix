@@ -29,22 +29,21 @@
           "monkeyC.developerKeyPath" = "/Users/nico/developer_key";
           "editor.inlineSuggest.enabled" = true;
           "solidity.telemetry" = true;
-          "runOnSave.statusMessageTimeout" = 3000;
-          "runOnSave.commands" = [
-            {
-              "match" = "\\.nix";
-              "isAsync" = false;
-              "command" = "nixfmt \${file}";
-              "runIn" = "terminal";
-            }
-            {
-              "match" = "\\.((t|j)sx?|json|md|ya?ml)$";
-              "notMatch" = "services/portal";
-              "isAsync" = false;
-              "command" = "dprint-fmt-one-file \${file}";
-              "runIn" = "terminal";
-            }
-          ];
+          "emeraldwalk.runonsave" = {
+            "commands" = [
+              {
+                "match" = "\\.nix$";
+                "isAsync" = false;
+                "cmd" = "nixfmt \${file}";
+              }
+              {
+                "match" = "\\.((t|j)sx?|json|md|ya?ml)$";
+                "notMatch" = "services/portal";
+                "isAsync" = false;
+                "cmd" = "dprint-fmt-one-file \${file}";
+              }
+            ];
+          };
           "github.copilot.enable" = {
             "*" = true;
             "plaintext" = false;
