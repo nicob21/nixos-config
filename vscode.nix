@@ -8,6 +8,17 @@
       default = {
         # settings
         userSettings = {
+          # Nix language server configuration (use nil instead of nixd)
+          "nix.enableLanguageServer" = true;
+          "nix.serverPath" = "nil";
+          "nix.serverSettings" = {
+            "nil" = {
+              "formatting" = {
+                "command" = [ "nixfmt" ];
+              };
+            };
+          };
+
           "workbench.startupEditor" = "none";
           "git.autofetch" = true;
           "javascript.format.insertSpaceBeforeFunctionParenthesis" = true;

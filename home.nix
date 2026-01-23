@@ -23,7 +23,8 @@
   # environment.
   home.packages = with pkgs; [
     # zsh-powerlevel10k
-    nixfmt-rfc-style
+    nixfmt
+    nil # Nix language server (lighter alternative to nixd)
     fzf
     htop
     jq
@@ -34,6 +35,7 @@
     zoom-us
     obsidian
     wl-clipboard # provides wl-copy and wl-paste (Wayland clipboard)
+    yarn
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -141,12 +143,12 @@
       tab_bar_min_tabs = 1;
       tab_fade = "0.25 0.5 0.75 1";
       tab_title_template = " {index}: {title} ";
-      
+
       # Active tab colors
       active_tab_foreground = "#fff";
       active_tab_background = "#5c6370";
       active_tab_font_style = "bold";
-      
+
       # Inactive tab colors
       inactive_tab_foreground = "#abb2bf";
       inactive_tab_background = "#282c34";
@@ -165,7 +167,7 @@
       # Tabs
       "ctrl+t" = "new_tab";
       "ctrl+w" = "close_tab";
-      
+
       # Tab navigation
       "ctrl+page_up" = "previous_tab";
       "ctrl+page_down" = "next_tab";
@@ -180,7 +182,7 @@
       "ctrl+9" = "goto_tab 9";
 
       # Navigation - beginning/end of line
-      "page_up" = "send_text all \\x01"; 
+      "page_up" = "send_text all \\x01";
       "page_down" = "send_text all \\x05";
 
       # Navigation - word by word
