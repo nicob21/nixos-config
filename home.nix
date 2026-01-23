@@ -165,7 +165,7 @@
       "ctrl+v" = "paste_from_clipboard";
 
       # Tabs
-      "ctrl+t" = "new_tab";
+      "ctrl+t" = "new_tab_with_cwd";
       "ctrl+w" = "close_tab";
 
       # Tab navigation
@@ -241,6 +241,17 @@
     };
     "org/gnome/desktop/session" = {
       idle-delay = 600; # seconds before screen goes blank (300 = 5 minutes, 0 = never)
+    };
+    # Custom keyboard shortcut for suspend
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+      ];
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+      name = "Suspend";
+      command = "systemctl suspend";
+      binding = "<Alt><Shift>s";
     };
   };
 

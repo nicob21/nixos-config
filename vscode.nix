@@ -245,6 +245,16 @@
             command = "-editor.unfoldAll";
             when = "editorTextFocus && foldingEnabled";
           }
+          {
+            key = "alt+shit+up";
+            command = "editor.action.copyLinesUpAction";
+            when = "editorTextFocus && !editorReadonly";
+          }
+          {
+            key = "alt+shift+down";
+            command = "editor.action.copyLinesDownAction";
+            when = "editorTextFocus && !editorReadonly";
+          }
         ];
 
         # extensions
