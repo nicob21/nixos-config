@@ -36,6 +36,46 @@
     obsidian
     wl-clipboard # provides wl-copy and wl-paste (Wayland clipboard)
     yarn
+    libnotify
+
+    (pkgs.writeShellScriptBin "toggle-display-mode" ''
+      STATE_FILE="$HOME/.local/state/display-mode"
+      VSCODE_SETTINGS="$HOME/.config/Code/User/settings.json"
+
+      mkdir -p "$(dirname "$STATE_FILE")"
+
+      CURRENT_MODE="desktop"
+      [ -f "$STATE_FILE" ] && CURRENT_MODE=$(cat "$STATE_FILE")
+
+      if [ "$CURRENT_MODE" = "desktop" ]; then
+        NEW_MODE="laptop"
+        GNOME_SCALE=1.3
+        VSCODE_ZOOM=3
+        KITTY_FONT_SIZE=20.0
+      else
+        NEW_MODE="desktop"
+        GNOME_SCALE=1.1
+        VSCODE_ZOOM=2
+        KITTY_FONT_SIZE=16.0
+      fi
+
+      # GNOME scaling
+      ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface text-scaling-factor "$GNOME_SCALE"
+
+      # VSCode zoom
+      if [ -f "$VSCODE_SETTINGS" ]; then
+        ${pkgs.jq}/bin/jq --arg zoom "$VSCODE_ZOOM" '.["window.zoomLevel"] = ($zoom | tonumber)' \
+          "$VSCODE_SETTINGS" > "$VSCODE_SETTINGS.tmp" && mv "$VSCODE_SETTINGS.tmp" "$VSCODE_SETTINGS"
+      fi
+
+      # Kitty font size
+      for socket in /tmp/kitty-socket*; do
+        [ -S "$socket" ] && ${pkgs.kitty}/bin/kitty @ --to "unix:$socket" set-font-size "$KITTY_FONT_SIZE" 2>/dev/null || true
+      done
+
+      echo "$NEW_MODE" > "$STATE_FILE"
+      ${pkgs.libnotify}/bin/notify-send "Display Mode" "Switched to $NEW_MODE mode" --icon=preferences-desktop-display
+    '')
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -137,6 +177,10 @@
       # Font settings
       font_size = "16.0";
 
+      # Remote control for dynamic settings (display mode toggle)
+      allow_remote_control = "yes";
+      listen_on = "unix:/tmp/kitty-socket";
+
       # Tab bar styling - clean and minimal
       tab_bar_edge = "bottom";
       tab_bar_style = "powerline";
@@ -234,6 +278,12 @@
     "org/gnome/desktop/interface" = {
       text-scaling-factor = 1.1; # adjust as needed (1.0 = 100%, 1.5 = 150%, etc.)
     };
+    "org/gnome/desktop/peripherals/touchpad" = {
+      speed = 0; # range: -1.0 (slowest) to 1.0 (fastest), default is 0
+      natural-scroll = true;
+      tap-to-click = true;
+      two-finger-scrolling-enabled = true;
+    };
     "org/gnome/desktop/background" = {
       picture-uri = "file://${config.home.homeDirectory}/.wallpaper";
       picture-uri-dark = "file://${config.home.homeDirectory}/.wallpaper";
@@ -242,16 +292,22 @@
     "org/gnome/desktop/session" = {
       idle-delay = 600; # seconds before screen goes blank (300 = 5 minutes, 0 = never)
     };
-    # Custom keyboard shortcut for suspend
+    # Custom keyboard shortcuts
     "org/gnome/settings-daemon/plugins/media-keys" = {
       custom-keybindings = [
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
       ];
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       name = "Suspend";
       command = "systemctl suspend";
       binding = "<Alt><Shift>s";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+      name = "Toggle Display Mode";
+      command = "toggle-display-mode";
+      binding = "<Super>z";
     };
   };
 
