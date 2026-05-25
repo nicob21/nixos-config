@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -37,6 +42,23 @@
     wl-clipboard # provides wl-copy and wl-paste (Wayland clipboard)
     yarn
     libnotify
+    sox
+    libreoffice-fresh
+    onlyoffice-desktopeditors
+    veracrypt
+    ksnip
+    keepassxc
+    freefilesync
+
+    (pkgs.writeShellScriptBin "annotate" ''
+      LATEST=$(ls -t "$HOME/Pictures/Screenshots/"*.png 2>/dev/null | head -1)
+      if [ -z "$LATEST" ]; then
+        echo "No screenshots found"
+        exit 1
+      fi
+      ${pkgs.ksnip}/bin/ksnip --edit "$LATEST"
+    '')
+    # lazygit is configured via programs.lazygit below
 
     (pkgs.writeShellScriptBin "toggle-display-mode" ''
       STATE_FILE="$HOME/.local/state/display-mode"
@@ -159,6 +181,15 @@
     };
   };
 
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      git = {
+        autoFetch = false;
+      };
+    };
+  };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
@@ -250,6 +281,17 @@
       "pbcopy" = "wl-copy";
       "pbpaste" = "wl-paste";
     };
+    initContent = ''
+      [ -f ~/.config/git/env ] && source ~/.config/git/env
+
+      newbranch() {                                                                                                                                                                                                                                                     
+        local branch="$1"                                                                                                                                                                                                                                               
+        git fetch origin && \                                                                                                                                                                                                                                           
+        git worktree add "../$branch" -b "$branch" origin/dev && \                                                                                                                                                                                                      
+        cd "../$branch" && \
+        direnv allow                                                                                                                                                                                                                                                
+      }                                                                                                                                                                                                                                                                 
+    '';
 
     plugins = [
       {
@@ -261,6 +303,26 @@
         name = "powerlevel10k-config";
         src = ./p10k-config;
         file = ".p10k.zsh";
+      }
+      {
+        name = "zsh-completion-sync";
+        src = pkgs.fetchFromGitHub {
+          owner = "BronzeDeer";
+          repo = "zsh-completion-sync";
+          rev = "44f4cda77e733a027dc03e9326c3f2f300e10518";
+          sha256 = "sha256-nTxeSUlYdl25MFZoLtpYTYq661iaik1RMj21ClOMY3c=";
+        };
+        file = "zsh-completion-sync.plugin.zsh";
+      }
+      {
+        name = "fzf-tab";
+        src = pkgs.fetchFromGitHub {
+          owner = "Aloxaf";
+          repo = "fzf-tab";
+          rev = "0983009f8666f11e91a2ee1f88cfdb748d14f656";
+          sha256 = "sha256-yvPQyuK4Dw+LkwxrkWTRcw4PIf/79fW61jWbEg8Pe9Y=";
+        };
+        file = "fzf-tab.plugin.zsh";
       }
     ];
 
@@ -279,8 +341,8 @@
       text-scaling-factor = 1.1; # adjust as needed (1.0 = 100%, 1.5 = 150%, etc.)
     };
     "org/gnome/desktop/peripherals/touchpad" = {
-      speed = 0; # range: -1.0 (slowest) to 1.0 (fastest), default is 0
-      natural-scroll = true;
+      speed = -0.2; # range: -1.0 (slowest) to 1.0 (fastest), default is 0
+      natural-scroll = false;
       tap-to-click = true;
       two-finger-scrolling-enabled = true;
     };
@@ -290,7 +352,7 @@
       picture-options = "zoom";
     };
     "org/gnome/desktop/session" = {
-      idle-delay = 600; # seconds before screen goes blank (300 = 5 minutes, 0 = never)
+      idle-delay = lib.hm.gvariant.mkUint32 900; # seconds before screen goes blank (900 = 15 minutes, 0 = never)
     };
     # Custom keyboard shortcuts
     "org/gnome/settings-daemon/plugins/media-keys" = {

@@ -86,9 +86,6 @@
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nico = {
     isNormalUser = true;
@@ -110,6 +107,9 @@
   # XDG integration for proper application icons and desktop entries
   programs.dconf.enable = true;
 
+  # FUSE support (required by VeraCrypt)
+  programs.fuse.userAllowOther = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -119,6 +119,7 @@
     git
     vim
     nixos-option
+    gparted
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
